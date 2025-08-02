@@ -1,10 +1,8 @@
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
 def display_header():
-    """Sets up the page configuration and displays the main title."""
     st.set_page_config(page_title="Smart Investment Report Analyzer", layout="wide")
     st.markdown("""
     <style>
@@ -20,7 +18,6 @@ def display_header():
     st.title("Smart Investment Report Analyzer")
 
 def display_welcome_message():
-    """Shows a friendly welcome message to the user."""
     with st.expander("👋 Welcome! Here's how I can help you today:", expanded=True):
         st.markdown("""
         I'm your personal AI assistant for financial reports. My goal is to help you find the insights you need without the headache of manual analysis.
@@ -34,7 +31,6 @@ def display_welcome_message():
         """)
 
 def display_sidebar():
-    """Creates the sidebar for file uploads and API key input."""
     with st.sidebar:
         st.header("Let's Get Started 🚀")
         uploaded_file = st.file_uploader("Drop your financial report here", type=["pdf", "docx"])
@@ -44,13 +40,12 @@ def display_sidebar():
     return uploaded_file, openai_api_key, process_btn
 
 def display_chat_interface(chat_history):
-    """Displays the chat history and the input for a new question."""
     st.header("Let's Chat About Your Report 💬")
     
     for i, message in enumerate(chat_history):
-        if i % 2 == 0:  # User message
+        if i % 2 == 0:
             st.markdown(f"<div style='background-color: #E3F2FD; padding: 10px; border-radius: 10px; margin-bottom: 10px;'><strong>You:</strong> {message}</div>", unsafe_allow_html=True)
-        else:  # AI response
+        else:
             st.markdown(f"<div style='background-color: #F1F5F9; padding: 10px; border-radius: 10px; margin-bottom: 10px;'><strong>Financial Assistant:</strong> {message}</div>", unsafe_allow_html=True)
             
     question = st.text_input("What would you like to know?", placeholder="e.g., 'What was the revenue growth last year?'")
@@ -61,7 +56,6 @@ def display_chat_interface(chat_history):
     return question
 
 def display_insights_dashboard(performance_logs, document_details):
-    """Shows the performance metrics and document information."""
     st.header("Your Insights Dashboard 📊")
     
     with st.expander("How I'm Performing For You", expanded=True):
@@ -93,7 +87,6 @@ def display_insights_dashboard(performance_logs, document_details):
         """)
 
 def display_initial_capabilities():
-    """Shows the initial capabilities of the app before a document is uploaded."""
     st.info("👋 Hi there! To get started, please upload your financial report using the sidebar on the left.")
     st.header("Here's How I Can Help You 🌟")
     
@@ -114,7 +107,6 @@ def display_initial_capabilities():
             </div>""", unsafe_allow_html=True)
 
 def display_footer():
-    """Displays the footer."""
     st.markdown("""<div style='margin-top: 50px; text-align: center; color: #64748B; font-size: 0.8em;'>
                 Smart Investment Report Analyzer | Making financial documents less boring since 2023 ✨<br>
                 Built with LangChain & OpenAI

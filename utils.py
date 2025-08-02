@@ -1,4 +1,3 @@
-
 import os
 import time
 import logging
@@ -11,21 +10,17 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.schema import Document
 
-# Set up friendly logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('investment_analyzer')
 
 class DocumentProcessor:
-    """Handles loading, processing, and querying financial documents."""
     
     def __init__(self, openai_api_key: str):
-        """Initializes the processor with the necessary API key and settings."""
         self.openai_api_key = openai_api_key
         os.environ["OPENAI_API_KEY"] = openai_api_key
         self.performance_logs = []
     
     def load_document(self, file_path: str) -> Tuple[List[Document], Dict[str, Any]]:
-        """Loads a document from a file path (PDF or DOCX)."""
         start_time = time.time()
         try:
             if file_path.endswith('.pdf'):
@@ -54,7 +49,6 @@ class DocumentProcessor:
             raise
     
     def split_documents(self, documents: List[Document]) -> Tuple[List[Document], Dict[str, Any]]:
-        """Splits documents into smaller chunks for processing."""
         start_time = time.time()
         try:
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=150)
@@ -75,7 +69,6 @@ class DocumentProcessor:
             raise
     
     def create_vectorstore(self, splits: List[Document]) -> Tuple[Chroma, Dict[str, Any]]:
-        """Creates a Chroma vector store from document splits."""
         start_time = time.time()
         try:
             embeddings = OpenAIEmbeddings()
@@ -95,7 +88,6 @@ class DocumentProcessor:
             raise
     
     def create_qa_chain(self, vectorstore: Chroma) -> ConversationalRetrievalChain:
-        """Creates a conversational retrieval chain for Q&A."""
         try:
             llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-16k")
             qa_chain = ConversationalRetrievalChain.from_llm(
@@ -110,7 +102,6 @@ class DocumentProcessor:
             raise
     
     def process_query(self, qa_chain: ConversationalRetrievalChain, query: str, chat_history: List[Tuple[str, str]]) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-        """Processes a user query using the Q&A chain."""
         start_time = time.time()
         try:
             result = qa_chain({"question": query, "chat_history": chat_history})
@@ -130,7 +121,6 @@ class DocumentProcessor:
             raise
 
     def get_performance_summary(self) -> Dict[str, Any]:
-        """Returns a summary of the performance logs."""
         if not self.performance_logs:
             return {}
         

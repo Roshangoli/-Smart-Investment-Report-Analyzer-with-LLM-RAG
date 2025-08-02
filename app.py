@@ -1,4 +1,3 @@
-
 import streamlit as st
 import os
 import tempfile
@@ -6,16 +5,12 @@ from dotenv import load_dotenv
 from utils import DocumentProcessor
 import ui_utils as ui
 
-# Load environment variables
 load_dotenv()
 
 def main():
-    """Main function to run the Streamlit application."""
-    # Initialize the UI
     ui.display_header()
     ui.display_welcome_message()
 
-    # Initialize session state
     if 'chat_history' not in st.session_state:
         st.session_state.chat_history = []
     if 'document_processed' not in st.session_state:
@@ -27,7 +22,6 @@ def main():
     if 'document_details' not in st.session_state:
         st.session_state.document_details = {}
 
-    # Sidebar for user inputs
     uploaded_file, openai_api_key, process_btn = ui.display_sidebar()
 
     if process_btn:
@@ -38,21 +32,17 @@ def main():
         else:
             with st.spinner("Processing your document... This might take a moment."):
                 try:
-                    # Temporarily save the uploaded file
                     with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
                         tmp_file.write(uploaded_file.getvalue())
                         tmp_path = tmp_file.name
 
-                    # Initialize the document processor
                     st.session_state.doc_processor = DocumentProcessor(openai_api_key)
 
-                    # Process the document
                     docs, _ = st.session_state.doc_processor.load_document(tmp_path)
                     splits, split_info = st.session_state.doc_processor.split_documents(docs)
                     vectorstore, _ = st.session_state.doc_processor.create_vectorstore(splits)
                     st.session_state.qa_chain = st.session_state.doc_processor.create_qa_chain(vectorstore)
 
-                    # Store document details for the dashboard
                     st.session_state.document_details = {
                         'file_name': uploaded_file.name,
                         'chunk_count': split_info['output_chunks'],
@@ -61,12 +51,11 @@ def main():
 
                     st.session_state.document_processed = True
                     st.sidebar.success("✅ Document processed successfully!")
-                    os.unlink(tmp_path)  # Clean up the temporary file
+                    os.unlink(tmp_path)
 
                 except Exception as e:
                     st.sidebar.error(f"Error processing document: {e}")
 
-    # Main content area
     if st.session_state.document_processed:
         col1, col2 = st.columns([2, 1])
         with col1:
@@ -77,10 +66,10 @@ def main():
                     result, _ = st.session_state.doc_processor.process_query(
                         st.session_state.qa_chain,
                         question,
-                        st.session_state.chat_history[:-1] # Pass previous chat history
+                        st.session_state.chat_history[:-1]
                     )
                     st.session_state.chat_history.append(result['answer'])
-                    st.experimental_rerun() # Refresh to show the new answer
+                    st.experimental_rerun()
 
         with col2:
             ui.display_insights_dashboard(
@@ -90,7 +79,6 @@ def main():
     else:
         ui.display_initial_capabilities()
 
-    # Footer
     ui.display_footer()
 
 if __name__ == '__main__':
