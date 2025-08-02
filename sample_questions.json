@@ -1,0 +1,42 @@
+[
+  {
+    "question": "What was the company's total revenue for the last fiscal year?",
+    "expected_answer": null
+  },
+  {
+    "question": "What are the main risk factors mentioned in the report?",
+    "expected_answer": null
+  },
+  {
+    "question": "How has the gross margin changed compared to the previous year?",
+    "expected_answer": null
+  },
+  {
+    "question": "What is the company's strategy for the next year?",
+    "expected_answer": null
+  },
+  {
+    "question": "Who are the key executives mentioned in the report?",
+    "expected_answer": null
+  },
+  {
+    "question": "What were the major expenses in the last quarter?",
+    "expected_answer": null
+  },
+  {
+    "question": "How does the company plan to address competition in the market?",
+    "expected_answer": null
+  },
+  {
+    "question": "What is the company's debt-to-equity ratio?",
+    "expected_answer": null
+  },
+  {
+    "question": "Has the company made any significant acquisitions recently?",
+    "expected_answer": null
+  },
+  {
+    "question": "What are the company's ESG (Environmental, Social, Governance) initiatives?",
+    "expected_answer": null
+  }
+]
